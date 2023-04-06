@@ -1,6 +1,7 @@
 # Create a VPC
 resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
+
   tags = {
     Name = "Main"
   }
@@ -52,7 +53,8 @@ resource "aws_internet_gateway" "main" {
 
 # create Elastic Ip address for NAT
 resource "aws_eip" "nat0" {
-  vpc      = true
+  vpc = true
+
   tags = {
     Name = "nat0"
   }
@@ -60,7 +62,8 @@ resource "aws_eip" "nat0" {
 
 # create Elastic Ipaddress for NAT
 resource "aws_eip" "nat1" {
-  vpc      = true
+  vpc = true
+
   tags = {
     Name = "nat1"
   }
@@ -93,6 +96,7 @@ resource "aws_route_table" "public_route" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.main.id
   }
+
   tags = {
     Name = "public_route"
   }
@@ -102,11 +106,12 @@ resource "aws_route_table" "private_route0" {
   vpc_id = aws_vpc.main.id
 
   route {
-      # why we use 0.0.0.0/0, not 10.0.3.0? 
-      # Does it mean all the host in private subnet can go to either public0 or public1 if one of those are down?
-    cidr_block = "0.0.0.0/0"
+    # why we use 0.0.0.0/0, not 10.0.3.0? 
+    # Does it mean all the host in private subnet can go to either public0 or public1 if one of those are down?
+    cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.public0.id
   }
+
   tags = {
     Name = "private_route0"
   }
@@ -118,8 +123,9 @@ resource "aws_route_table" "private_route1" {
   route {
     # why we use 0.0.0.0/0, not 10.0.3.0? 
     # Does it mean all the host in private subnet can go to either public0 or public1 if one of those are down?
-    cidr_block = "0.0.0.0/0"
+    cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.public1.id
+    
   }
   tags = {
     Name = "private_route1"
