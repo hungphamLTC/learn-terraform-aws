@@ -123,8 +123,8 @@ resource "aws_route_table" "private1" {
     # Does it mean all the host in private subnet can go to either public0 or public1 if one of those are down?
     cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.public1.id
-    
   }
+  
   tags = {
     Name = "private1"
   }
