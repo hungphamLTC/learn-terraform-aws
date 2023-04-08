@@ -76,7 +76,6 @@ resource "aws_nat_gateway" "public0" {
   tags = {
     Name = "public0"
   }
-
 }
 
 resource "aws_nat_gateway" "public1" {
@@ -86,10 +85,9 @@ resource "aws_nat_gateway" "public1" {
   tags = {
     Name = "public1"
   }
-
 }
 
-resource "aws_route_table" "public_route" {
+resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
   route {
@@ -98,11 +96,11 @@ resource "aws_route_table" "public_route" {
   }
 
   tags = {
-    Name = "public_route"
+    Name = "public"
   }
 }
 
-resource "aws_route_table" "private_route0" {
+resource "aws_route_table" "private0" {
   vpc_id = aws_vpc.main.id
 
   route {
@@ -113,11 +111,11 @@ resource "aws_route_table" "private_route0" {
   }
 
   tags = {
-    Name = "private_route0"
+    Name = "private0"
   }
 }
 
-resource "aws_route_table" "private_route1" {
+resource "aws_route_table" "private1" {
   vpc_id = aws_vpc.main.id
 
   route {
@@ -128,26 +126,26 @@ resource "aws_route_table" "private_route1" {
     
   }
   tags = {
-    Name = "private_route1"
+    Name = "private1"
   }
 }
 
 resource "aws_route_table_association" "public0" {
   subnet_id      = aws_subnet.public0.id
-  route_table_id = aws_route_table.public_route.id
+  route_table_id = aws_route_table.public.id
 }
 
 resource "aws_route_table_association" "public1" {
   subnet_id      = aws_subnet.public1.id
-  route_table_id = aws_route_table.public_route.id
+  route_table_id = aws_route_table.public.id
 }
 
 resource "aws_route_table_association" "private0" {
   subnet_id      = aws_subnet.private0.id
-  route_table_id = aws_route_table.private_route0.id
+  route_table_id = aws_route_table.private0.id
 }
 
 resource "aws_route_table_association" "private1" {
   subnet_id      = aws_subnet.private1.id
-  route_table_id = aws_route_table.private_route1.id
+  route_table_id = aws_route_table.private1.id
 }
