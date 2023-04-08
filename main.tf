@@ -49,6 +49,7 @@ resource "aws_eip" "nat" {
 
 resource "aws_nat_gateway" "public" {
   count = length(var.private_cidr)
+  
   allocation_id = aws_eip.nat[count.index].id
   subnet_id     = aws_subnet.public[count.index].id
 
