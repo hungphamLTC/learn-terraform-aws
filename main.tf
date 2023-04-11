@@ -1,6 +1,7 @@
 # Create a VPC
 resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
+
   tags = {
     Name = "Main"
   }
@@ -49,14 +50,13 @@ resource "aws_eip" "nat" {
 
 resource "aws_nat_gateway" "public" {
   count = length(var.private_cidr)
-  
+
   allocation_id = aws_eip.nat[count.index].id
   subnet_id     = aws_subnet.public[count.index].id
 
   tags = {
     Name = "${var.area_code}-public${count.index}"
   }
-
 }
 
 resource "aws_route_table" "public" {
@@ -66,6 +66,7 @@ resource "aws_route_table" "public" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.main.id
   }
+
   tags = {
     Name = "public_route"
   }
@@ -82,6 +83,7 @@ resource "aws_route_table" "private" {
     cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.public[count.index].id
   }
+
   tags = {
     Name = "${var.area_code}-private${count.index}"
   }
