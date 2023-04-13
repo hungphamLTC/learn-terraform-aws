@@ -8,8 +8,6 @@ variable "private_cidr" {}
 
 variable "public_cidr" {}
 
-variable "ami_id" {}
-
 variable "instance_type" {}
 
 variable "key_name" {}

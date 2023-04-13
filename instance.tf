@@ -1,7 +1,26 @@
 # Creating EC2 instance in public Subnet
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-*-amd64-server-*"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
 
 resource "aws_instance" "public" {
-  ami                         = var.ami_id
+  ami                         = data.aws_ami.ubuntu.id
   associate_public_ip_address = true
   instance_type               = var.instance_type
   key_name                    = var.key_name
@@ -38,7 +57,7 @@ resource "aws_security_group" "public" {
 }
 
 resource "aws_instance" "private" {
-  ami                    = var.ami_id
+  ami                    = data.aws_ami.ubuntu.id
   instance_type          = var.instance_type
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.private.id]
