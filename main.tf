@@ -1,9 +1,9 @@
 # Create a VPC
 resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = var.vpc_cidr
 
   tags = {
-    Name = "Main"
+    Name = "main"
   }
 }
 
@@ -68,7 +68,7 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name = "public_route"
+    Name = "${var.area_code}-public"
   }
 }
 
@@ -88,7 +88,6 @@ resource "aws_route_table" "private" {
     Name = "${var.area_code}-private${count.index}"
   }
 }
-
 
 resource "aws_route_table_association" "public" {
   count = length(var.public_cidr)
