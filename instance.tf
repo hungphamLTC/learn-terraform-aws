@@ -24,6 +24,7 @@ resource "aws_instance" "public" {
   associate_public_ip_address = true
   instance_type               = var.instance_type
   key_name                    = var.key_name
+  user_data                   = file("install_apache.sh")
   vpc_security_group_ids      = [aws_security_group.public.id]
   subnet_id                   = aws_subnet.public[0].id
 
@@ -41,7 +42,15 @@ resource "aws_security_group" "public" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["91.158.228.182/32"]
+    cidr_blocks = [var.personal_cidr]
+  }
+
+  ingress {
+    description = "HTTP from public"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = [var.personal_cidr]
   }
 
   egress {
