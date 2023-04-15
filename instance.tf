@@ -42,7 +42,7 @@ resource "aws_security_group" "public" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = var.personal_cidr
+    cidr_blocks = [var.personal_cidr]
   }
 
   ingress {
@@ -50,7 +50,7 @@ resource "aws_security_group" "public" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = var.personal_cidr
+    cidr_blocks = [var.personal_cidr]
   }
 
   egress {
