@@ -30,7 +30,7 @@ resource "aws_dynamodb_table" "terraform-remote-state" {
   name           = "terraform-remote-state"
   read_capacity  = 1
   write_capacity = 1
-  
+
   attribute {
     name = "LockID"
     type = "S"
