@@ -24,7 +24,6 @@ resource "aws_instance" "public" {
   associate_public_ip_address = true
   instance_type               = var.instance_type
   key_name                    = var.key_name
-  user_data                   = file("install_apache.sh")
   vpc_security_group_ids      = [aws_security_group.public.id]
   subnet_id                   = data.terraform_remote_state.level1.outputs.public_subnet_id[0]
 
@@ -69,6 +68,7 @@ resource "aws_instance" "private" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = var.instance_type
   key_name               = var.key_name
+  user_data              = file("install_apache.sh")
   vpc_security_group_ids = [aws_security_group.private.id]
   subnet_id              = data.terraform_remote_state.level1.outputs.private_subnet_id[0]
   tags = {
@@ -86,6 +86,14 @@ resource "aws_security_group" "private" {
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = [data.terraform_remote_state.level1.outputs.vpc_cidr]
+  }
+
+  ingress {
+    description     = "HTTP from load balancer"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.load_balancer.id]
   }
 
   egress {
