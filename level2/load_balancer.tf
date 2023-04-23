@@ -1,6 +1,6 @@
 resource "aws_security_group" "load_balancer" {
   name        = "${var.area_code}-load balancer"
-  description = "Security Group"
+  description = "Security Group for ALB"
   vpc_id      = data.terraform_remote_state.level1.outputs.vpc_id
 
   ingress {
@@ -58,7 +58,7 @@ resource "aws_lb_target_group_attachment" "main" {
   port             = 80
 }
 
-resource "aws_lb_listener" "front_end" {
+resource "aws_lb_listener" "main" {
   load_balancer_arn = aws_lb.main.arn
   port              = "80"
   protocol          = "HTTP"
