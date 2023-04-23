@@ -64,18 +64,6 @@ resource "aws_security_group" "public" {
   }
 }
 
-resource "aws_instance" "private" {
-  ami                    = data.aws_ami.ubuntu.id
-  instance_type          = var.instance_type
-  key_name               = var.key_name
-  user_data              = file("install_apache.sh")
-  vpc_security_group_ids = [aws_security_group.private.id]
-  subnet_id              = data.terraform_remote_state.level1.outputs.private_subnet_id[0]
-  tags = {
-    Name = "${var.area_code}-private"
-  }
-}
-
 resource "aws_security_group" "private" {
   name        = "${var.area_code}-private"
   description = "Security Group"
