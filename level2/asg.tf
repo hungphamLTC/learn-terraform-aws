@@ -2,6 +2,8 @@ module "asg" {
   source = "../modules/asg"
 
   area_code         = var.area_code
+  instance_type = var.instance_type
+  key_name = var.key_name
   vpc_id            = data.terraform_remote_state.level1.outputs.vpc_id
   private_subnet_id = data.terraform_remote_state.level1.outputs.private_subnet_id
   load_balancer_sg  = module.lb.load_balancer_sg

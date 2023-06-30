@@ -21,10 +21,10 @@ data "aws_ami" "ubuntu" {
 resource "aws_launch_configuration" "main" {
   name_prefix          = "${var.area_code}-"
   image_id             = data.aws_ami.ubuntu.id
-  instance_type        = "t2.micro"
+  instance_type        = var.instance_type
   security_groups      = [aws_security_group.private.id]
   user_data            = file("${path.module}/install_apache.sh")
-  key_name             = "main11"
+  key_name             = var.key_name
   iam_instance_profile = aws_iam_instance_profile.main.name
 }
 
