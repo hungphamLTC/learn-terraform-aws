@@ -1,5 +1,5 @@
-data "aws_route53_zone" "main"{
-    name = "hungpham.link"
+data "aws_route53_zone" "main" {
+  name = "hungpham.link"
 }
 
 resource "aws_route53_record" "www" {
